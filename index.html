@@ -2,56 +2,41 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Server Latihan 24 Jam</title>
+    <title>Server Monitoring 24 Jam</title>
     <style>
         body { 
-            background-color: #0d1117; 
-            color: #58a6ff; 
+            background-color: #000; 
+            color: #0f0; 
             text-align: center; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            padding-top: 80px;
+            font-family: monospace; 
+            padding-top: 100px;
         }
-        .container { 
-            border: 2px solid #238636; 
+        .box { 
+            border: 1px solid #0f0; 
             display: inline-block; 
-            padding: 40px; 
-            border-radius: 15px; 
-            background-color: #161b22;
-            box-shadow: 0 0 20px rgba(35, 134, 54, 0.5);
+            padding: 20px; 
+            background: #111;
         }
-        h1 { color: #238636; margin-bottom: 10px; }
-        p { color: #8b949e; }
-        .visitor-box {
-            margin-top: 30px;
-            padding: 15px;
-            background: #0d1117;
-            border-radius: 8px;
-            border: 1px solid #30363d;
-        }
-        .status-dot {
-            height: 10px;
-            width: 10px;
-            background-color: #238636;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 5px;
+        .counter-text { 
+            font-size: 30px; 
+            font-weight: bold; 
+            margin: 20px 0;
+            color: #fff;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1><span class="status-dot"></span> SERVER LIVE</h1>
-        <p>Target ini berjalan otomatis di GitHub Pages 24/7.</p>
-
-        <div class="visitor-box">
-            <p style="font-size: 12px; margin-bottom: 10px; color: #58a6ff;">TOTAL AKSES MASUK:</p>
-            <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fdoniciro4-sudo.github.io%2FWeb-testingggg&count_bg=%23238636&title_bg=%2330363d&icon=&icon_color=%23E7E7E7&title=PENGUNJUNG&edge_flat=false" alt="Visitor Count">
-        </div>
-
-        <p style="font-size: 11px; margin-top: 20px;">Status: <span style="color: #238636;">Monitoring Active</span></p>
+    <div class="box">
+        <h2>[ STATUS: ACTIVE ]</h2>
+        <p>Target: doniciro4-sudo.github.io</p>
+        <hr color="#0f0">
+        
+        <p>TOTAL AKSES TERDETEKSI:</p>
+        <div id="visitor-count" class="counter-text">Memuat Data...</div>
+        
+        <p style="font-size: 12px;">Update: Real-time via API</p>
     </div>
 
-</body>
-</html>
+    <script>
+        // Script untuk mengambil angka dari API pengh
