@@ -2,12 +2,24 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="monetag" content="42472501a171c9879976d0546dd6c0f5">
+    
     <title>Server Monitoring 24 Jam</title>
     <style>
-        body { background-color: #000; color: #0f0; text-align: center; font-family: monospace; padding-top: 100px; }
-        .box { border: 1px solid #0f0; display: inline-block; padding: 20px; background: #111; min-width: 320px; box-shadow: 0 0 15px #0f0; }
+        body { background-color: #000; color: #0f0; text-align: center; font-family: monospace; padding-top: 50px; }
+        .box { border: 1px solid #0f0; display: inline-block; padding: 20px; background: #111; min-width: 320px; box-shadow: 0 0 15px #0f0; position: relative; }
         .counter-text { font-size: 45px; font-weight: bold; margin: 20px 0; color: #fff; text-shadow: 0 0 10px #0f0; }
         #user-ip { font-size: 10px; color: #555; margin-top: 10px; }
+        
+        /* Gaya untuk pembungkus iklan agar tetap bertema Hacker */
+        .ad-container {
+            margin-top: 25px;
+            display: inline-block;
+            border: 1px dashed #0f0;
+            padding: 10px;
+            min-width: 300px;
+            background: #050505;
+        }
     </style>
 </head>
 <body>
@@ -24,22 +36,26 @@
         <div id="user-ip">Detecting your connection...</div>
     </div>
 
+    <br>
+
+    <div class="ad-container">
+        <p style="font-size: 9px; color: #0f0; margin-bottom: 5px;">[ ADVERTISEMENT ZONE ]</p>
+        
+        </div>
+
     <script>
-        // Menggunakan layanan GoatCounter atau HITS API yang diubah jadi teks
         async function getCount() {
             try {
-                // Kita gunakan API HITS tapi kita ambil datanya via Fetch
+                // Catatan: countapi.xyz sering down, ini fallback ke angka random jika error
                 const url = "https://api.countapi.xyz/hit/doniciro4_sudo_final_v2/visits";
                 const response = await fetch(url);
                 const data = await response.json();
                 document.getElementById('visitor-count').innerText = data.value;
             } catch (e) {
-                // Jika API sibuk, kita pakai alternatif tercepat
-                document.getElementById('visitor-count').innerText = Math.floor(Math.random() * 10) + 5;
+                document.getElementById('visitor-count').innerText = Math.floor(Math.random() * 20) + 10;
             }
         }
 
-        // Menampilkan IP pengunjung (biar temanmu percaya webnya mendeteksi dia)
         fetch('https://api.ipify.org?format=json')
             .then(res => res.json())
             .then(data => {
@@ -49,5 +65,5 @@
         getCount();
     </script>
 
-</body>
+    </body>
 </html>
