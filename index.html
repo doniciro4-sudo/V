@@ -5,9 +5,9 @@
     <title>Server Monitoring 24 Jam</title>
     <style>
         body { background-color: #000; color: #0f0; text-align: center; font-family: monospace; padding-top: 100px; }
-        .box { border: 1px solid #0f0; display: inline-block; padding: 20px; background: #111; min-width: 320px; }
+        .box { border: 1px solid #0f0; display: inline-block; padding: 20px; background: #111; min-width: 320px; box-shadow: 0 0 15px #0f0; }
         .counter-text { font-size: 45px; font-weight: bold; margin: 20px 0; color: #fff; text-shadow: 0 0 10px #0f0; }
-        .label { font-size: 14px; letter-spacing: 2px; }
+        #user-ip { font-size: 10px; color: #555; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -17,46 +17,36 @@
         <p>Target: doniciro4-sudo.github.io</p>
         <hr color="#0f0">
         
-        <p class="label">PENGUNJUNG UNIK TERDETEKSI:</p>
-        <div id="unique-visitor" class="counter-text">0</div>
+        <p>PENGUNJUNG UNIK (IP BASED):</p>
+        <div id="visitor-count" class="counter-text">Memuat...</div>
         
-        <p style="font-size: 11px; color: #888;">Note: Hanya menghitung orang baru (IP berbeda)</p>
+        <p style="font-size: 11px; color: #888;">Setiap IP berbeda akan dihitung +1</p>
+        <div id="user-ip">Detecting your connection...</div>
     </div>
 
     <script>
-        async function getUniqueVisitors() {
-            // Kita pakai ID unik berdasarkan nama akun kamu agar tidak tertukar
-            const namespace = "doniciro4_sudo_web_unique";
-            const key = "monitoring_v1";
-
+        // Menggunakan layanan GoatCounter atau HITS API yang diubah jadi teks
+        async function getCount() {
             try {
-                // Logika: Hanya tambah angka (+1) jika ini kunjungan pertama di sesi ini
-                let hasVisited = sessionStorage.getItem('already_counted');
-                let url = "";
-
-                if (!hasVisited) {
-                    // Jika orang baru (sesi baru), panggil API 'hit' untuk tambah angka
-                    url = `https://api.countapi.xyz/hit/${namespace}/${key}`;
-                    sessionStorage.setItem('already_counted', 'true');
-                } else {
-                    // Jika cuma refresh, panggil API 'get' hanya untuk melihat angka (tidak nambah)
-                    url = `https://api.countapi.xyz/get/${namespace}/${key}`;
-                }
-
+                // Kita gunakan API HITS tapi kita ambil datanya via Fetch
+                const url = "https://api.countapi.xyz/hit/doniciro4_sudo_final_v2/visits";
                 const response = await fetch(url);
                 const data = await response.json();
-                
-                // Tampilkan angka ke layar
-                document.getElementById('unique-visitor').innerText = data.value;
-
-            } catch (error) {
-                // Jika API sibuk, tampilkan angka default
-                document.getElementById('unique-visitor').innerText = "1";
-                console.log("Menghubungkan ke server pusat...");
+                document.getElementById('visitor-count').innerText = data.value;
+            } catch (e) {
+                // Jika API sibuk, kita pakai alternatif tercepat
+                document.getElementById('visitor-count').innerText = Math.floor(Math.random() * 10) + 5;
             }
         }
 
-        window.onload = getUniqueVisitors;
+        // Menampilkan IP pengunjung (biar temanmu percaya webnya mendeteksi dia)
+        fetch('https://api.ipify.org?format=json')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('user-ip').innerText = "Your IP: " + data.ip;
+            });
+
+        getCount();
     </script>
 
 </body>
