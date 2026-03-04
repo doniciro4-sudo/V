@@ -1,37 +1,39 @@
-// Import Firebase SDK dari CDN
+// Import Firebase SDK dari CDN (Versi Lite agar cepat)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getDatabase, ref, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-// TEMPEL CONFIG FIREBASE KAMU DI SINI (Dapatkan dari tombol + Add app di gambar)
+// KONFIGURASI FIREBASE KAMU (SUDAH TERISI)
 const firebaseConfig = {
-    apiKey: "AIzaSy...",
-    authDomain: "tiksave-pro.firebaseapp.com",
-    databaseURL: "https://tiksave-pro-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "tiksave-pro",
-    storageBucket: "tiksave-pro.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "1:123456789:web:abcdef"
+  apiKey: "AIzaSyBdPyIdAM2WThbACPMXuO4BR0862sjJvGk",
+  authDomain: "tiksave-pro-e32c5.firebaseapp.com",
+  projectId: "tiksave-pro-e32c5",
+  storageBucket: "tiksave-pro-e32c5.firebasestorage.app",
+  messagingSenderId: "163327438786",
+  appId: "1:163327438786:web:b1526c29d2a80f3ac2305b",
+  measurementId: "G-69N55XZYVZ",
+  // URL Database otomatis mengikuti region Singapore/Default
+  databaseURL: "https://tiksave-pro-e32c5-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
 
 // Inisialisasi Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Fungsi untuk mencatat log ke Firebase
+// Fungsi mencatat log ke Firebase
 async function saveDownloadLog(videoUrl) {
     try {
         await push(ref(db, 'laporan_download'), {
             url_target: videoUrl,
             timestamp: serverTimestamp(),
-            user_agent: navigator.userAgent,
-            platform: navigator.platform
+            info_perangkat: navigator.userAgent
         });
+        console.log("Log berhasil masuk ke Firebase");
     } catch (e) {
-        console.error("Gagal mencatat log:", e);
+        console.error("Gagal mencatat ke Firebase:", e);
     }
 }
 
-// Fungsi utama fetchVideo (Sudah digabung)
+// Fungsi utama aplikasi (Gabungan)
 async function fetchVideo() {
     const input = document.getElementById('videoUrl');
     const btn = document.getElementById('btnAction');
@@ -48,9 +50,9 @@ async function fetchVideo() {
         return;
     }
 
-    // STATE LOADING
-    btnText.innerText = "PROSES PENGECEKAN";
-    if(btnLoader) btnLoader.classList.remove('hidden');
+    // TAMPILAN LOADING
+    btnText.innerText = "SEDANG MENCARI...";
+    if (btnLoader) btnLoader.classList.remove('hidden');
     btn.disabled = true;
     resultDiv.classList.add('hidden');
     errorMsg.classList.add('hidden');
@@ -64,13 +66,13 @@ async function fetchVideo() {
 
             downloadBtn.onclick = async (e) => {
                 e.preventDefault();
-                downloadBtn.innerText = "MENYIMPAN DATA...";
+                downloadBtn.innerText = "MENGIRIM LOG...";
                 downloadBtn.disabled = true;
                 
-                // --- PROSES CATAT LOG KE DATABASE ---
+                // --- CATAT SIAPA YANG DOWNLOAD ---
                 await saveDownloadLog(url);
                 
-                downloadBtn.innerText = "SEDANG MENGUNDUH...";
+                downloadBtn.innerText = "MENGUNDUH VIDEO...";
                 
                 try {
                     const res = await fetch(videoUrl);
@@ -84,13 +86,13 @@ async function fetchVideo() {
                     a.click();
                     document.body.removeChild(a);
                     
-                    downloadBtn.innerText = "UNDUH BERHASIL";
+                    downloadBtn.innerText = "BERHASIL!";
                     setTimeout(() => {
                         downloadBtn.innerText = "UNDUH SEKARANG";
                         downloadBtn.disabled = false;
                     }, 2000);
                 } catch (err) {
-                    // Fallback jika fetch blob gagal
+                    // Fallback jika browser blokir download otomatis
                     window.open(videoUrl, '_blank');
                     downloadBtn.innerText = "UNDUH SEKARANG";
                     downloadBtn.disabled = false;
@@ -99,17 +101,17 @@ async function fetchVideo() {
 
             resultDiv.classList.remove('hidden');
         } else {
-            throw new Error("TAUTAN TIDAK VALID ATAU PRIVAT");
+            throw new Error("Tautan tidak valid atau video privat.");
         }
     } catch (err) {
-        errorMsg.innerText = "KESALAHAN: " + err.message;
+        errorMsg.innerText = "Error: " + err.message;
         errorMsg.classList.remove('hidden');
     } finally {
         btnText.innerText = "AMBIL VIDEO";
-        if(btnLoader) btnLoader.classList.add('hidden');
+        if (btnLoader) btnLoader.classList.add('hidden');
         btn.disabled = false;
     }
 }
 
-// Hubungkan ke tombol HTML
+// Pasang event klik ke tombol
 document.getElementById('btnAction').addEventListener('click', fetchVideo);
