@@ -6,7 +6,7 @@ async function fetchVideo() {
     const errorMsg = document.getElementById('errorMsg');
 
     const url = input.value.trim();
-    if (!url) return alert("Masukkan link TikTok dulu!");
+    if (!url) return alert("Tempel link TikTok dulu!");
 
     // UI Loading
     btn.innerText = "⏳ Sedang Memproses...";
@@ -15,19 +15,25 @@ async function fetchVideo() {
     errorMsg.classList.add('hidden');
 
     try {
-        // Kerjasama dengan API TikWM
+        // Panggil API TikWM
         const response = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`);
+        
+        if (!response.ok) throw new Error("Gagal terhubung ke server API.");
+        
         const json = await response.json();
 
-        if (json.code === 0) {
-            const videoUrl = json.data.play; // Ini link video HD tanpa watermark
+        // Cek apakah data video ada
+        if (json && json.data && json.data.play) {
+            const videoUrl = json.data.play; 
 
-            // Logika Download Langsung (Memaksa browser simpan file)
+            // Tombol Download Langsung
             downloadBtn.onclick = async (e) => {
                 e.preventDefault();
                 downloadBtn.innerText = "📥 Mengunduh...";
+                downloadBtn.disabled = true;
                 
                 try {
+                    // Cara paksa download agar masuk galeri
                     const videoRes = await fetch(videoUrl);
                     const blob = await videoRes.blob();
                     const blobUrl = URL.createObjectURL(blob);
@@ -42,19 +48,21 @@ async function fetchVideo() {
                     
                     downloadBtn.innerText = "✅ Berhasil Disimpan!";
                 } catch (err) {
-                    // Jika browser memblokir download paksa, buka di tab baru sebagai cadangan
+                    // Jika cara paksa gagal, buka di tab baru sebagai cadangan
                     window.open(videoUrl, '_blank');
                     downloadBtn.innerText = "SIMPAN KE GALERI";
                 }
+                downloadBtn.disabled = false;
             };
 
             resultDiv.classList.remove('hidden');
         } else {
-            throw new Error("Link tidak valid atau video tidak ditemukan.");
+            throw new Error(json.msg || "Video tidak ditemukan atau link salah.");
         }
     } catch (err) {
         errorMsg.innerText = "Error: " + err.message;
         errorMsg.classList.remove('hidden');
+        console.error(err);
     } finally {
         btn.innerText = "Ambil Video";
         btn.disabled = false;
