@@ -1,53 +1,61 @@
 async function fetchVideo() {
-    const urlInput = document.getElementById('videoUrl');
+    const input = document.getElementById('videoUrl');
     const btn = document.getElementById('btnAction');
     const resultDiv = document.getElementById('result');
-    const downloadBtn = document.getElementById('downloadLink');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const errorMsg = document.getElementById('errorMsg');
 
-    const url = urlInput.value.trim();
-    if (!url) return alert("Link mana bos?");
+    const url = input.value.trim();
+    if (!url) return alert("Link-nya kosong, Bos!");
 
-    btn.innerText = "⏳ Sedang Menyiapkan File...";
+    // Set Loading State
+    btn.innerText = "🌀 Sedang Memproses...";
     btn.disabled = true;
+    resultDiv.classList.add('hidden');
+    errorMsg.classList.add('hidden');
 
     try {
-        // 1. Ambil data dari API secara rahasia (di belakang layar)
+        // 1. Minta bantuan API TikWM (Di belakang layar)
         const response = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`);
-        const result = await response.json();
+        const json = await response.json();
 
-        if (result.code === 0) {
-            const videoUrl = result.data.play; 
+        if (json.code === 0) {
+            const videoUrl = json.data.play; 
 
-            // 2. JANGAN kasih link asli ke tombol download. 
-            // Kita kasih fungsi "Penyedot" saat tombol diklik
-            downloadBtn.onclick = async (e) => {
-                e.preventDefault(); 
-                downloadBtn.innerText = "📥 Sedang Mengunduh...";
-                
-                // 3. Teknik Rahasia: Download video ke memori browser dulu
-                const fileResponse = await fetch(videoUrl);
-                const fileBlob = await fileResponse.blob();
-                const localUrl = window.URL.createObjectURL(fileBlob);
-                
-                // 4. Buat link palsu yang otomatis nge-klik sendiri ke HP user
-                const linkPalsu = document.createElement('a');
-                linkPalsu.href = localUrl;
-                linkPalsu.download = "Video_Saya.mp4"; // Nama file terserah kamu
-                document.body.appendChild(linkPalsu);
-                linkPalsu.click();
-                
-                // 5. Bereskan jejak
-                document.body.removeChild(linkPalsu);
-                window.URL.revokeObjectURL(localUrl);
-                downloadBtn.innerText = "✅ Berhasil Disimpan!";
+            // 2. Logika Download Langsung (Blob)
+            downloadBtn.onclick = async () => {
+                downloadBtn.innerText = "📥 Mengunduh...";
+                downloadBtn.disabled = true;
+
+                try {
+                    const res = await fetch(videoUrl);
+                    const blob = await res.blob();
+                    const localUrl = URL.createObjectURL(blob);
+                    
+                    const a = document.createElement('a');
+                    a.href = localUrl;
+                    a.download = `VGet_${Date.now()}.mp4`; // Nama file custom
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(localUrl);
+
+                    downloadBtn.innerText = "✅ Tersimpan!";
+                } catch (e) {
+                    // Jika Blob gagal (CORS), buka tab baru sebagai cadangan
+                    window.open(videoUrl, '_blank');
+                    downloadBtn.innerText = "Simpan ke Galeri";
+                }
+                downloadBtn.disabled = false;
             };
 
             resultDiv.classList.remove('hidden');
         } else {
-            alert("Video tidak ditemukan atau link salah!");
+            throw new Error("Link tidak valid atau video privat.");
         }
     } catch (err) {
-        alert("Server sibuk, coba lagi nanti!");
+        errorMsg.innerText = err.message;
+        errorMsg.classList.remove('hidden');
     } finally {
         btn.innerText = "Ambil Video";
         btn.disabled = false;
