@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikSave Pro | Premium Downloader</title>
+    <title>TIKSAVE PRO | High-Speed Downloader</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     
@@ -22,83 +22,91 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 0;
         }
 
-        /* ANIMASI BACKGROUND GRADASI BERGERAK */
+        /* ANIMATED AMBIENT BACKGROUND */
         .bg-glow {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #050505 100%);
+            background: radial-gradient(circle at 50% 50%, #0f172a 0%, #050505 100%);
             z-index: -2;
         }
 
         .orb {
             position: absolute;
-            width: 400px;
-            height: 400px;
+            width: 500px;
+            height: 500px;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
+            filter: blur(100px);
+            opacity: 0.15;
             z-index: -1;
-            animation: moveOrb 20s infinite alternate;
+            animation: moveOrb 15s infinite alternate ease-in-out;
         }
 
         @keyframes moveOrb {
-            from { transform: translate(-10%, -10%); }
-            to { transform: translate(20%, 20%); }
+            from { transform: translate(-20%, -20%); }
+            to { transform: translate(30%, 30%); }
         }
 
-        /* GLASSMORPHISM CARD */
+        /* GLASSMORPHISM CONTAINER */
         .premium-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 40px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transition: all 0.5s ease;
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.7);
         }
 
-        /* INPUT STYLE */
+        /* INPUT FIELD */
         .glass-input {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: white;
         }
         .glass-input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 20px rgba(0, 242, 234, 0.2);
-            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 25px rgba(0, 242, 234, 0.15);
+            background: rgba(0, 0, 0, 0.7);
+            outline: none;
         }
 
-        /* BUTTON NEON GLOW */
-        .btn-neon {
-            background: linear-gradient(90deg, var(--secondary), var(--primary));
-            background-size: 200% auto;
-            transition: 0.5s;
-            box-shadow: 0 0 20px rgba(255, 0, 80, 0.3);
+        /* PREMIUM BUTTON */
+        .btn-premium {
+            background: white;
+            color: black;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 800;
+            letter-spacing: 0.05em;
         }
-        .btn-neon:hover {
-            background-position: right center;
-            box-shadow: 0 0 30px rgba(0, 242, 234, 0.5);
-            transform: translateY(-3px);
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+            background: #f0f0f0;
+        }
+        .btn-premium:active {
+            transform: scale(0.97);
         }
 
-        /* ANIMASI FADE IN UP */
-        .fade-up {
-            animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        /* FADE ANIMATION */
+        .fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(40px); }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* MINIMALIST LOADER */
         .loader {
-            border: 3px solid rgba(255,255,255,0.1);
-            border-top: 3px solid white;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-top: 2px solid black;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
+            width: 18px;
+            height: 18px;
+            animation: spin 0.8s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
@@ -106,11 +114,103 @@
 <body>
 
     <div class="bg-glow"></div>
-    <div class="orb bg-indigo-600 top-0 left-0"></div>
-    <div class="orb bg-pink-900 bottom-0 right-0" style="animation-delay: -5s;"></div>
+    <div class="orb bg-blue-500 top-0 left-0"></div>
+    <div class="orb bg-purple-900 bottom-0 right-0" style="animation-delay: -7s;"></div>
 
     <div class="w-full max-w-lg p-6">
-        <div class="premium-card p-10 fade-up text-center">
+        <div class="premium-card p-12 fade-in-up text-center">
+            
+            <header class="mb-12">
+                <div class="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6">
+                    <span class="text-[9px] font-bold tracking-[0.4em] text-cyan-400 uppercase">Pro Version 2.0</span>
+                </div>
+                <h1 class="text-6xl font-black tracking-tighter bg-gradient-to-b from-white via-white to-slate-500 bg-clip-text text-transparent">
+                    TIKSAVE
+                </h1>
+                <p class="text-slate-500 text-[10px] mt-4 tracking-[0.3em] font-medium uppercase">Premium Video Downloader</p>
+            </header>
+
+            <div class="space-y-6">
+                <div class="relative">
+                    <input type="text" id="videoUrl" placeholder="MASUKKAN TAUTAN VIDEO" 
+                        class="w-full glass-input p-5 rounded-2xl text-center text-xs tracking-widest uppercase">
+                </div>
+                
+                <button onclick="fetchVideo()" id="btnAction"
+                    class="w-full btn-premium py-5 rounded-2xl text-xs uppercase flex items-center justify-center gap-3">
+                    <span id="btnText">AMBIL VIDEO</span>
+                    <div id="btnLoader" class="hidden loader"></div>
+                </button>
+            </div>
+
+            <div id="result" class="hidden mt-12 pt-10 border-t border-white/5 space-y-5">
+                <p class="text-emerald-400 text-[9px] font-bold tracking-[0.3em] uppercase">VIDEO BERHASIL DITEMUKAN</p>
+                
+                <button id="downloadBtn" 
+                    class="w-full bg-transparent border border-white/20 text-white font-bold py-5 rounded-2xl hover:bg-white hover:text-black transition-all text-xs tracking-widest">
+                    UNDUH SEKARANG
+                </button>
+            </div>
+
+            <p id="errorMsg" class="hidden text-red-400 text-[10px] mt-8 bg-red-500/5 p-4 rounded-2xl border border-red-500/10 tracking-wider uppercase"></p>
+        </div>
+
+        <p class="text-center text-slate-700 text-[9px] mt-10 tracking-[0.4em] uppercase font-bold">EST 2026 • PRIVATE ACCESS</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<body>
+
+    <div class="bg-glow"></div>
+    <div class="orb bg-blue-500 top-0 left-0"></div>
+    <div class="orb bg-purple-900 bottom-0 right-0" style="animation-delay: -7s;"></div>
+
+    <div class="w-full max-w-lg p-6">
+        <div class="premium-card p-12 fade-in-up text-center">
+            
+            <header class="mb-12">
+                <div class="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6">
+                    <span class="text-[9px] font-bold tracking-[0.4em] text-cyan-400 uppercase">Pro Version 2.0</span>
+                </div>
+                <h1 class="text-6xl font-black tracking-tighter bg-gradient-to-b from-white via-white to-slate-500 bg-clip-text text-transparent">
+                    TIKSAVE
+                </h1>
+                <p class="text-slate-500 text-[10px] mt-4 tracking-[0.3em] font-medium uppercase">Premium Video Downloader</p>
+            </header>
+
+            <div class="space-y-6">
+                <div class="relative">
+                    <input type="text" id="videoUrl" placeholder="MASUKKAN TAUTAN VIDEO" 
+                        class="w-full glass-input p-5 rounded-2xl text-center text-xs tracking-widest uppercase">
+                </div>
+                
+                <button onclick="fetchVideo()" id="btnAction"
+                    class="w-full btn-premium py-5 rounded-2xl text-xs uppercase flex items-center justify-center gap-3">
+                    <span id="btnText">AMBIL VIDEO</span>
+                    <div id="btnLoader" class="hidden loader"></div>
+                </button>
+            </div>
+
+            <div id="result" class="hidden mt-12 pt-10 border-t border-white/5 space-y-5">
+                <p class="text-emerald-400 text-[9px] font-bold tracking-[0.3em] uppercase">VIDEO BERHASIL DITEMUKAN</p>
+                
+                <button id="downloadBtn" 
+                    class="w-full bg-transparent border border-white/20 text-white font-bold py-5 rounded-2xl hover:bg-white hover:text-black transition-all text-xs tracking-widest">
+                    UNDUH SEKARANG
+                </button>
+            </div>
+
+            <p id="errorMsg" class="hidden text-red-400 text-[10px] mt-8 bg-red-500/5 p-4 rounded-2xl border border-red-500/10 tracking-wider uppercase"></p>
+        </div>
+
+        <p class="text-center text-slate-700 text-[9px] mt-10 tracking-[0.4em] uppercase font-bold">EST 2026 • PRIVATE ACCESS</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
             
             <header class="mb-10 animate-pop-in" style="animation-delay: 0.1s">
     <div class="inline-block relative mb-6 p-4 rounded-3xl bg-black/30 border border-white/10 shadow-2xl">
